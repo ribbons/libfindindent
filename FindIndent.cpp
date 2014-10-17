@@ -48,13 +48,24 @@ bool FindIndent::ProcessLine(const char* buffer, int length)
 
 		int difference = abs(spaces - prevLineInd);
 
-		if(difference <= maxIndent)
+		if(difference >= minIndent && difference <= maxIndent)
 		{
-			diffCounts[difference - 1]++;
+			diffCounts[difference - minIndent]++;
 		}
 	}
 
 	return ++lines < maxAnalyseLines;
+}
+
+int FindIndent::getMinIndent()
+{
+	return minIndent;
+}
+
+void FindIndent::setMinIndent(int min)
+{
+	minIndent = min;
+	diffCounts.resize(maxIndent - min);
 }
 
 int FindIndent::getMaxIndent()
@@ -65,7 +76,7 @@ int FindIndent::getMaxIndent()
 void FindIndent::setMaxIndent(int max)
 {
 	maxIndent = max;
-	diffCounts.resize(max);
+	diffCounts.resize(max - minIndent);
 }
 
 int FindIndent::getMaxAnalyseLines()
@@ -97,11 +108,11 @@ int FindIndent::getIndentSize()
 	int maxPos = indUnknown;
 	int maxVal = 0;
 
-	for(int i = 0; i < maxIndent; i++)
+	for(unsigned int i = 0; i < diffCounts.size(); i++)
 	{
 		if(diffCounts[i] > maxVal)
 		{
-			maxPos = i + 1;
+			maxPos = i + minIndent;
 			maxVal = diffCounts[i];
 		}
 	}
