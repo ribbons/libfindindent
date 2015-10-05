@@ -1,6 +1,6 @@
 /*
  * This file is part of libfindindent.
- * Copyright © 2014 by the authors - see the AUTHORS file for details.
+ * Copyright © 2014-2015 by the authors - see the AUTHORS file for details.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General
  * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
@@ -14,7 +14,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include "stdafx.h"
 #include "../FindIndent.h"
 
 #define BOOST_TEST_MODULE FindIndent test
