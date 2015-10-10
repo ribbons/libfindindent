@@ -19,6 +19,18 @@
 
 const int FindIndent::indUnknown = 0;
 
+FindIndent::FindIndent() :
+	minIndent(2),
+	maxIndent(8),
+	maxAnalyseLines(500),
+	lines(0),
+	thresholdLines(0),
+	tabLines(0),
+	spaceLines(0),
+	prevLineInd(0),
+	diffCounts(maxIndent - minIndent + 1)
+{}
+
 bool FindIndent::ProcessLine(const char* buffer, int length)
 {
 	bool tabs = false;

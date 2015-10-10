@@ -30,11 +30,8 @@ public:
 
 	static const int indUnknown;
 
-	FindIndent() : minIndent(2), maxIndent(8), maxAnalyseLines(500),
-		lines(0), thresholdLines(0), tabLines(0), spaceLines(0),
-		prevLineInd(0),
-		diffCounts(maxIndent - minIndent + 1) {}
-	
+	FindIndent();
+
 	bool ProcessLine(const char* buffer, int length);
 
 	bool ProcessLine(const std::string text)
