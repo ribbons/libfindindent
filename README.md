@@ -16,7 +16,7 @@ First, open a shell in the root of the project and then run the following to gen
 ``` sh
 mkdir build
 cd build
-CMake ..
+cmake ..
 ```
 
 If CMake can't find your installation of Boost, you might need to set the `BOOST_ROOT` environment variable.
