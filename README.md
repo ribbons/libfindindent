@@ -1,7 +1,7 @@
 libfindindent
 =============
 
-[![Build Status](https://travis-ci.org/ribbons/libfindindent.svg)](https://travis-ci.org/ribbons/libfindindent)
+![CI](https://github.com/ribbons/libfindindent/workflows/CI/badge.svg?branch=master)
 
 libfindindent is a portable C++ library to automatically determine the indent style from a text file.
 
