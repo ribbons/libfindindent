@@ -10,38 +10,38 @@
 class FindIndent
 {
 private:
-	int minIndent, maxIndent, maxAnalyseLines;
-	int lines, thresholdLines, tabLines, spaceLines;
-	int prevLineInd;
-	std::vector<int> diffCounts;
+    int minIndent, maxIndent, maxAnalyseLines;
+    int lines, thresholdLines, tabLines, spaceLines;
+    int prevLineInd;
+    std::vector<int> diffCounts;
 
 public:
-	typedef enum { tsUnknown, tsTabs, tsSpaces } TabStyle;
+    typedef enum { tsUnknown, tsTabs, tsSpaces } TabStyle;
 
-	static const int indUnknown;
+    static const int indUnknown;
 
-	FindIndent();
+    FindIndent();
 
-	bool ProcessLine(const char* buffer, int length);
+    bool ProcessLine(const char* buffer, int length);
 
-	bool ProcessLine(const std::string text)
-	{
-		return ProcessLine(text.c_str(), text.length());
-	}
+    bool ProcessLine(const std::string text)
+    {
+        return ProcessLine(text.c_str(), text.length());
+    }
 
-	int getMinIndent();
+    int getMinIndent();
 
-	void setMinIndent(int min);
+    void setMinIndent(int min);
 
-	int getMaxIndent();
+    int getMaxIndent();
 
-	void setMaxIndent(int max);
+    void setMaxIndent(int max);
 
-	int getMaxAnalyseLines();
+    int getMaxAnalyseLines();
 
-	void setMaxAnalyseLines(int max);
+    void setMaxAnalyseLines(int max);
 
-	TabStyle getTabStyle();
+    TabStyle getTabStyle();
 
-	int getIndentSize();
+    int getIndentSize();
 };

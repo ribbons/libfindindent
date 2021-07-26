@@ -10,164 +10,164 @@
 const int FindIndent::indUnknown = 0;
 
 FindIndent::FindIndent() :
-	minIndent(2),
-	maxIndent(8),
-	maxAnalyseLines(500),
-	lines(0),
-	thresholdLines(0),
-	tabLines(0),
-	spaceLines(0),
-	prevLineInd(0),
-	diffCounts(maxIndent - minIndent + 1)
+    minIndent(2),
+    maxIndent(8),
+    maxAnalyseLines(500),
+    lines(0),
+    thresholdLines(0),
+    tabLines(0),
+    spaceLines(0),
+    prevLineInd(0),
+    diffCounts(maxIndent - minIndent + 1)
 {}
 
 bool FindIndent::ProcessLine(const char* buffer, int length)
 {
-	bool tabs = false;
-	int spaces = 0;
-	bool skip = false;
+    bool tabs = false;
+    int spaces = 0;
+    bool skip = false;
 
-	while(length > 0)
-	{
-		switch(buffer[length - 1])
-		{
-			case '\r':
-			case '\n':
-				length--;
-				break;
+    while(length > 0)
+    {
+        switch(buffer[length - 1])
+        {
+            case '\r':
+            case '\n':
+                length--;
+                break;
 
-			default:
-				goto ENDTRIM;
-		}
-	}
+            default:
+                goto ENDTRIM;
+        }
+    }
 
 ENDTRIM:
 
-	for(int pos = 0; pos < length; pos++)
-	{
-		switch(buffer[pos])
-		{
-			case '\t':
-				tabs = true;
+    for(int pos = 0; pos < length; pos++)
+    {
+        switch(buffer[pos])
+        {
+            case '\t':
+                tabs = true;
 
-				if(spaces > 0)
-				{
-					skip = true;
-					goto EOL;
-				}
+                if(spaces > 0)
+                {
+                    skip = true;
+                    goto EOL;
+                }
 
-				break;
-			case ' ':
-				spaces++;
+                break;
+            case ' ':
+                spaces++;
 
-				if(tabs)
-				{
-					skip = true;
-					goto EOL;
-				}
+                if(tabs)
+                {
+                    skip = true;
+                    goto EOL;
+                }
 
-				break;
-			case '*':
-				skip = true;
-				goto EOL;
+                break;
+            case '*':
+                skip = true;
+                goto EOL;
 
-			default:
-				goto EOL;
-		}
-	}
+            default:
+                goto EOL;
+        }
+    }
 
 EOL:
 
-	if(!skip)
-	{
-		if(tabs)
-		{
-			tabLines++;
-			thresholdLines++;
-		}
-		else 
-		{
-			if(spaces > 0)
-			{
-				spaceLines++;
-			}
+    if(!skip)
+    {
+        if(tabs)
+        {
+            tabLines++;
+            thresholdLines++;
+        }
+        else
+        {
+            if(spaces > 0)
+            {
+                spaceLines++;
+            }
 
-			if(length > 0)
-			{
-				int difference = abs(spaces - prevLineInd);
-				prevLineInd = spaces;
+            if(length > 0)
+            {
+                int difference = abs(spaces - prevLineInd);
+                prevLineInd = spaces;
 
-				if(difference >= minIndent && difference <= maxIndent)
-				{
-					diffCounts[difference - minIndent]++;
-					thresholdLines++;
-				}
-			}
-		}
-	}
+                if(difference >= minIndent && difference <= maxIndent)
+                {
+                    diffCounts[difference - minIndent]++;
+                    thresholdLines++;
+                }
+            }
+        }
+    }
 
-	return ++lines < maxAnalyseLines;
+    return ++lines < maxAnalyseLines;
 }
 
 int FindIndent::getMinIndent()
 {
-	return minIndent;
+    return minIndent;
 }
 
 void FindIndent::setMinIndent(int min)
 {
-	minIndent = min;
-	diffCounts.resize(maxIndent - min + 1);
+    minIndent = min;
+    diffCounts.resize(maxIndent - min + 1);
 }
 
 int FindIndent::getMaxIndent()
 {
-	return maxIndent;
+    return maxIndent;
 }
 
 void FindIndent::setMaxIndent(int max)
 {
-	maxIndent = max;
-	diffCounts.resize(max - minIndent + 1);
+    maxIndent = max;
+    diffCounts.resize(max - minIndent + 1);
 }
 
 int FindIndent::getMaxAnalyseLines()
 {
-	return maxAnalyseLines;
+    return maxAnalyseLines;
 }
 
 void FindIndent::setMaxAnalyseLines(int max)
 {
-	maxAnalyseLines = max;
+    maxAnalyseLines = max;
 }
 
 FindIndent::TabStyle FindIndent::getTabStyle()
 {
-	if(tabLines > spaceLines)
-	{
-		return tsTabs;
-	}
-	else if(spaceLines > tabLines)
-	{
-		return tsSpaces;
-	}
+    if(tabLines > spaceLines)
+    {
+        return tsTabs;
+    }
+    else if(spaceLines > tabLines)
+    {
+        return tsSpaces;
+    }
 
-	return tsUnknown;
+    return tsUnknown;
 }
 
 int FindIndent::getIndentSize()
 {
-	int maxPos = indUnknown;
-	int maxVal = 0;
+    int maxPos = indUnknown;
+    int maxVal = 0;
 
-	for(unsigned int i = 0; i < diffCounts.size(); i++)
-	{
-		if(diffCounts[i] > maxVal && diffCounts[i] > thresholdLines / 10)
-		{
-			maxPos = i + minIndent;
-			maxVal = diffCounts[i];
-		}
-	}
+    for(unsigned int i = 0; i < diffCounts.size(); i++)
+    {
+        if(diffCounts[i] > maxVal && diffCounts[i] > thresholdLines / 10)
+        {
+            maxPos = i + minIndent;
+            maxVal = diffCounts[i];
+        }
+    }
 
-	return maxPos;
+    return maxPos;
 }
