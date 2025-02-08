@@ -1,5 +1,5 @@
 /*
- * Copyright © 2014-2015 Matt Robinson
+ * Copyright © 2014-2025 Matt Robinson
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -24,7 +24,7 @@ public:
 
     bool ProcessLine(const char* buffer, int length);
 
-    bool ProcessLine(const std::string text)
+    bool ProcessLine(const std::string& text)
     {
         return ProcessLine(text.c_str(), text.length());
     }

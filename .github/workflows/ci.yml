@@ -18,6 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install cppcheck
+        run: sudo apt-get install cppcheck
+
       - name: Install and sign
         run: |
           sudo gem install overcommit --no-document
